@@ -88,6 +88,18 @@ class HerokuConfig(ProductionConfig):
         app.logger.addHandler(file_handler)
 
 
+class UnixConfig(ProductionConfig):
+    @classmethod
+    def init_app(cls, app):
+        ProductionConfig.init_app(app)
+
+        import logging
+        from logging.handlers import SysLogHandler
+        syslog_handler = SysLogHandler()
+        syslog_handler.setLevel(logging.WARNING)
+        app.logger.addHandler(syslog_handler)
+
+
 config = {
     'development': DevelopmentConig,
     'testing': TestingConfig,
