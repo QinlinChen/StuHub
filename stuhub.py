@@ -70,10 +70,14 @@ def profile(length, profile_dir):
 
 
 @app.cli.command()
+def init_db():
+    """init database"""
+    db.create_all()
+    Role.insert_roles()
+
+
+@app.cli.command()
 def deploy():
     """Run deployment tasks."""
-    # migrate database to latest revision
     upgrade()
-
-    # create or update user roles
     Role.insert_roles()
