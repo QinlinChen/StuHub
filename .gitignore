@@ -109,3 +109,4 @@ venv.bak/
 # others
 *.sqlite
 import-config.ps1
+tmp
