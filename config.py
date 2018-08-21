@@ -7,6 +7,7 @@ class Config:
     APP_NAME = 'StuHub'
     SECRET_KEY = os.environ.get('SECRET_KEY', 'hard to guess string')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_RECORD_QUERIES = True
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.qq.com')
     MAIL_PORT = int(os.environ.get('MAIL_PORT', '587'))
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in \
@@ -19,7 +20,8 @@ class Config:
     APP_POSTS_PER_PAGE = 20
     APP_FOLLOWERS_PER_PAGE = 50
     APP_COMMENTS_PER_PAGE = 30
-    
+    APP_SLOW_DB_QUERY_TIME = 0.5
+
     @staticmethod
     def init_app(app):
         pass
