@@ -237,30 +237,6 @@ class User(UserMixin, db.Model):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
             .filter(Follow.follower_id == self.id)
 
-    @staticmethod
-    def average_weighted_score_on_credit(courses):
-        sum_score = 0.0
-        sum_credit = 0
-        for course in courses:
-            sum_score += course.score * course.credit
-            sum_credit += course.credit
-        return sum_score / sum_credit
-
-    def comprehensive_gpa(self, terms):
-        pass
-
-    def academic_gpa(self, terms):
-        pass
-
-    def postgraduate_recommandation_gpa(self, terms):
-        pass
-
-    def total_credit(self, terms):
-        pass
-    
-    def general_course_credit(self, terms):
-        pass
-
     def __repr__(self):
         return '<User %r>' % self.username
 
@@ -339,6 +315,23 @@ class CourseType:
     PRO_CORE = 7
     PRO_OPTIONAL = 8
 
+    @staticmethod
+    def academic_type():
+        return (
+            CourseType.PUBLIC_BASIC_MATHS_PHYSICS,
+            CourseType.PRO_BASIC,
+            CourseType.PRO_CORE,
+            CourseType.PRO_OPTIONAL
+        )
+
+    @staticmethod
+    def postgraduate_recommandation_type():
+        return (
+            CourseType.PUBLIC_BASIC_MATHS_PHYSICS,
+            CourseType.PRO_BASIC,
+            CourseType.PRO_CORE
+        )
+
 
 course_type_name = {
     CourseType.GENERAL: '通识',
@@ -361,3 +354,53 @@ class Course(db.Model):
     score = db.Column(db.Float)
     term = db.Column(db.Integer, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    @staticmethod
+    def average_weighted_score_on_credit(courses):
+        sum_score = 0.0
+        sum_credit = 0
+        for course in courses:
+            sum_score += course.score * course.credit
+            sum_credit += course.credit
+        if sum_credit == 0:
+            return 0
+        return sum_score / sum_credit
+
+    @staticmethod
+    def comprehensive_gpa(courses):
+        return Course.average_weighted_score_on_credit(courses) / 20
+
+    @staticmethod
+    def academic_gpa(courses):
+        academic_courses = [course for course in courses
+                            if course.type_id in CourseType.academic_type()]
+        return Course.average_weighted_score_on_credit(academic_courses) / 20
+
+    @staticmethod
+    def postgraduate_recommandation_gpa(courses):
+        pgr_courses = [course for course in courses
+                       if course.type_id in CourseType.postgraduate_recommandation_type()]
+        return Course.average_weighted_score_on_credit(pgr_courses) / 20
+
+    @staticmethod
+    def have_fullfilled_reading_requirement(courses):
+        reading_courses = [course for course in courses
+                           if course.type_id == CourseType.READING]
+        return len(reading_courses) >= 6
+
+    @staticmethod
+    def get_reading_credit(courses):
+        if Course.have_fullfilled_reading_requirement(courses):
+            return 2
+        return 0
+
+    @staticmethod
+    def total_credit(courses):
+        return sum([course.credit for course in courses]) + \
+            Course.get_reading_credit(courses)
+
+    @staticmethod
+    def general_course_credit(courses):
+        return sum([course.credit for course in courses
+                    if course.type_id == CourseType.GENERAL]) +\
+            Course.get_reading_credit(courses)

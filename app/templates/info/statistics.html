@@ -9,7 +9,16 @@
         Statistics
     </h1>
 </div>
-<p>
-    Hello
-</p>
+
+<div class="courses-table">
+    <table class="table table-hover courses">
+        <thead><tr><th>Statistic quantity</th><th>Result</th></tr></thead>
+        {% for key, value in statistics.items() %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}

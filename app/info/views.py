@@ -33,7 +33,20 @@ def courses():
                            courses=courses, pagination=pagination)
 
 
+def get_statistics(user, terms):
+    courses = user.courses.filter(Course.term.in_(terms)).all()
+    return {
+        '综合GPA': '%.2f' % Course.comprehensive_gpa(courses),
+        '专业GPA': '%.2f' % Course.academic_gpa(courses),
+        '保研GPA': '%.2f' % Course.postgraduate_recommandation_gpa(courses),
+        '14通识学分': str(Course.general_course_credit(courses)),
+        '总学分': str(Course.total_credit(courses))
+    }
+
+
 @info.route('/statistics', methods=['GET', 'POST'])
 @login_required
 def statistics():
-    return render_template('/info/statistics.html')
+    terms = list(range(0, 9))
+    statistics = get_statistics(current_user, terms)
+    return render_template('/info/statistics.html', statistics=statistics)

@@ -17,11 +17,11 @@
 
 <div class="courses-table">
     <table class="table table-hover courses">
-        <thead><tr><th>Course name</th><th>Term</th> <th>Course type</th><th>Credit</th><th>Score</th></tr></thead>
+        <thead><tr><th>Term</th><th>Course name</th><th>Course type</th><th>Credit</th><th>Score</th></tr></thead>
         {% for course in courses %}
         <tr>
-            <td>{{ course.name }}</td>
             <td>第{{ course.term }}学期</td>
+            <td>{{ course.name }}</td>
             <td>{{ course_type_name[course.type_id] }}</td>
             <td>{{ course.credit }}</td>
             <td>{{ course.score }}</td>
