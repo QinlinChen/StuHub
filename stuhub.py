@@ -1,20 +1,20 @@
 import os
 
-
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
     import coverage
     COV = coverage.coverage(branch=True, include='app/*')
     COV.start()
 
-
 import sys
 import click
 
 from flask_migrate import Migrate, upgrade
 
+import app.fake as fake
 from app import create_app, db
-from app.models import Comment, Follow, Permission, Post, Role, User
+from app.models import (Comment, Follow, Permission, Post, Role,
+                        User, Course, CourseType)
 
 app = create_app(os.getenv('APP_CONFIG') or 'default')
 migrate = Migrate(app, db)
@@ -28,7 +28,8 @@ def inject_app_name():
 @app.shell_context_processor
 def make_shell_context():
     return dict(db=db, User=User, Role=Role, Permission=Permission,
-                Post=Post, Comment=Comment)
+                Post=Post, Comment=Comment, Course=Course,
+                CourseType=CourseType)
 
 
 @app.cli.command()
@@ -70,14 +71,13 @@ def profile(length, profile_dir):
 
 
 @app.cli.command()
-def init_db():
+def deploy():
     """init database"""
-    db.create_all()
+    upgrade()
     Role.insert_roles()
 
 
 @app.cli.command()
-def deploy():
-    """Run deployment tasks."""
-    upgrade()
-    Role.insert_roles()
+def fake_data():
+    fake.users()
+    fake.posts(200)

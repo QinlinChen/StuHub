@@ -107,6 +107,7 @@ class User(UserMixin, db.Model):
                                 lazy='dynamic',
                                 cascade='all, delete-orphan')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
+    courses = db.relationship('Course', backref='user', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -302,3 +303,24 @@ class Comment(db.Model):
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
+
+
+class CourseType:
+    GENERAL = 1
+    READING = 2
+    PUBLIC_BASIC = 3
+    PUBLIC_BASIC_MATHS_PHYSICS = 4
+    PUBLIC_OPTIONAL = 5
+    PRO_BASIC = 6
+    PRO_CORE = 7
+    PRO_OPTIONAL = 8
+
+
+class Course(db.Model):
+    __tablename__ = 'courses'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128))
+    type_id = db.Column(db.Integer)
+    credit = db.Column(db.Integer)
+    score = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
