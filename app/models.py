@@ -308,12 +308,24 @@ db.event.listen(Comment.body, 'set', Comment.on_changed_body)
 class CourseType:
     GENERAL = 1
     READING = 2
-    PUBLIC_BASIC = 3
-    PUBLIC_BASIC_MATHS_PHYSICS = 4
-    PUBLIC_OPTIONAL = 5
+    PUBLIC_OPTIONAL = 3
+    PUBLIC_BASIC = 4
+    PUBLIC_BASIC_MATHS_PHYSICS = 5
     PRO_BASIC = 6
     PRO_CORE = 7
     PRO_OPTIONAL = 8
+
+
+course_type_name = {
+    CourseType.GENERAL: '通识',
+    CourseType.READING: '经典阅读',
+    CourseType.PUBLIC_OPTIONAL: '公选',
+    CourseType.PUBLIC_BASIC: '通修',
+    CourseType.PUBLIC_BASIC_MATHS_PHYSICS: '数理通修',
+    CourseType.PRO_BASIC: '专业平台',
+    CourseType.PRO_CORE: '专业核心',
+    CourseType.PRO_OPTIONAL: '专业选修'
+}
 
 
 class Course(db.Model):
