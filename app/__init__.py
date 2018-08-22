@@ -44,7 +44,7 @@ def create_app(config_name):
     from .blog import blog as blog_blueprint
     app.register_blueprint(blog_blueprint, url_prefix='/blog')
 
-    from .statistic import statistic as statistic_blueprint
-    app.register_blueprint(statistic_blueprint, url_prefix='/statistic')
+    from .info import info as info_blueprint
+    app.register_blueprint(info_blueprint, url_prefix='/info')
     
     return app

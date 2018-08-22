@@ -237,6 +237,30 @@ class User(UserMixin, db.Model):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
             .filter(Follow.follower_id == self.id)
 
+    @staticmethod
+    def average_weighted_score_on_credit(courses):
+        sum_score = 0.0
+        sum_credit = 0
+        for course in courses:
+            sum_score += course.score * course.credit
+            sum_credit += course.credit
+        return sum_score / sum_credit
+
+    def comprehensive_gpa(self, terms):
+        pass
+
+    def academic_gpa(self, terms):
+        pass
+
+    def postgraduate_recommandation_gpa(self, terms):
+        pass
+
+    def total_credit(self, terms):
+        pass
+    
+    def general_course_credit(self, terms):
+        pass
+
     def __repr__(self):
         return '<User %r>' % self.username
 
@@ -332,7 +356,8 @@ class Course(db.Model):
     __tablename__ = 'courses'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
-    type_id = db.Column(db.Integer)
+    type_id = db.Column(db.Integer, index=True)
     credit = db.Column(db.Integer)
     score = db.Column(db.Float)
+    term = db.Column(db.Integer, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

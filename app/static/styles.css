@@ -154,16 +154,16 @@ div.flask-pagedown-preview h3 {
     border-bottom: 1px solid #e0e0e0;
 }
 
-.table.statistic tr {
+.table.courses tr {
     border-bottom: 1px solid #e0e0e0;
 }
 
-div.statistic-tabs {
-    clear: both;
-    margin-top: 16px;
-}
-
-div.statistic-form {
+div.courses-form {
     margin-bottom: 16px;
     padding-left: 0;
+}
+
+div.courses-table {
+    clear: both;
+    margin-top: 16px;
 }
