@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from . import info
 from .. import db
 from ..models import Course, CourseType
-from .forms import CourseForm, TermRangeForm
+from .forms import CourseForm, ImportCourseForm, TermRangeForm
 
 
 @info.route('/courses', methods=['GET', 'POST'])
@@ -28,8 +28,8 @@ def courses():
         'type_id', CourseType.GENERAL, type=int)
     page = request.args.get('page', 1, type=int)
     courses_per_page = current_app.config['APP_COURSES_PER_PAGE']
-    pagination = current_user.courses.order_by(Course.term.desc()).paginate(
-        page, per_page=courses_per_page, error_out=False)
+    pagination = current_user.courses.order_by(Course.term.desc()).order_by(
+        Course.type_id.asc()).paginate(page, per_page=courses_per_page, error_out=False)
     courses = pagination.items
     return render_template('/info/courses.html', form=form,
                            courses=courses, pagination=pagination)
@@ -70,7 +70,16 @@ def delete_course(id):
 @info.route('/import-course', methods=['GET', 'POST'])
 @login_required
 def import_courses():
-    return render_template('/info/import_courses.html')
+    form = ImportCourseForm()
+    if form.validate_on_submit():
+        markup = request.files[form.file.name].read().decode('utf-8')
+        for course in Course.parse_courses(markup):
+            course.term = form.term.data
+            course.user = current_user._get_current_object()
+            db.session.add(course)
+        db.session.commit()
+        return redirect(url_for('.courses'))
+    return render_template('/info/import_courses.html', form=form)
 
 
 def get_statistics(user, terms):

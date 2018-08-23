@@ -2,6 +2,7 @@ import hashlib
 from datetime import datetime
 
 import bleach
+from bs4 import BeautifulSoup
 from flask import current_app, request
 from flask_login import AnonymousUserMixin, UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -404,3 +405,29 @@ class Course(db.Model):
         return sum([course.credit for course in courses
                     if course.type_id == CourseType.GENERAL]) +\
             Course.get_reading_credit(courses)
+
+    def guess_type_id(self, type_name):
+        if type_name == '通识':
+            return CourseType.GENERAL
+        if type_name == '通修':
+            return CourseType.PUBLIC_BASIC
+        if type_name == '平台':
+            return CourseType.PRO_BASIC
+        if type_name == '核心':
+            return CourseType.PRO_CORE
+        if type_name == '选修':
+            return CourseType.GENERAL
+
+    @staticmethod
+    def parse_courses(markup):
+        soup = BeautifulSoup(markup, features='lxml')
+        courses = []
+        for tr in soup.select('table table:nth-of-type(2) tr')[1:]:
+            tds = tr.find_all('td')
+            course = Course(name=tds[2].get_text().strip(),
+                            credit=int(tds[5].get_text().strip()),
+                            score=float(tds[6].get_text().strip()))
+            type_name = tds[4].get_text().strip()
+            course.type_id = course.guess_type_id(type_name)
+            courses.append(course)
+        return courses

@@ -1,8 +1,10 @@
+import os
+
 from flask_wtf import FlaskForm
-from wtforms import (FloatField, IntegerField, SelectField, StringField,
-                     SubmitField)
+from wtforms import (FileField, FloatField, IntegerField, SelectField,
+                     StringField, SubmitField)
 from wtforms.validators import (DataRequired, InputRequired, NumberRange,
-                                ValidationError)
+                                Regexp, ValidationError)
 
 from ..models import course_type_name
 
@@ -52,3 +54,14 @@ class TermRangeForm(FlaskForm):
     term_to = SelectField('Term to', coerce=int, choices=[
                           (index, '第%d学期' % index) for index in range(1, 9)])
     submit = SubmitField('Submit')
+
+
+class ImportCourseForm(FlaskForm):
+    term = SelectField('Term', coerce=int, choices=[
+                       (index, '第%d学期' % index) for index in range(1, 9)])
+    file = FileField('File', validators=[DataRequired()])
+    SubmitField = SubmitField('Submit')
+
+    def validate_file(self, field):
+        if os.path.splitext(field.data.filename)[-1] != '.html':
+            raise ValidationError('You should upload html file.')
