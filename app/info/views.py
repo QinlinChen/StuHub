@@ -45,7 +45,7 @@ def edit_course(id):
         course.term = form.term.data
         course.type_id = form.type_id.data
         course.credit = form.credit.data
-        course.score = form.credit.data
+        course.score = form.score.data
         db.session.add(course)
         db.session.commit()
         flash('The course has been updated.')
