@@ -13,11 +13,13 @@
 
 <div class="col-md-4 courses-form">
     {{ wtf.quick_form(form) }}
+    <br />
+    <p>嫌一条一条添加成绩麻烦？试试<a href="{{ url_for('.import_courses') }}">批量导入</a>.</p>
 </div>
 
 <div class="courses-table">
     <table class="table table-hover courses">
-        <thead><tr><th>Term</th><th>Course name</th><th>Course type</th><th>Credit</th><th>Score</th></tr></thead>
+        <thead><tr><th>Term</th><th>Course name</th><th>Course type</th><th>Credit</th><th>Score</th><th></th></tr></thead>
         {% for course in courses %}
         <tr>
             <td>第{{ course.term }}学期</td>
@@ -25,6 +27,10 @@
             <td>{{ course_type_name[course.type_id] }}</td>
             <td>{{ course.credit }}</td>
             <td>{{ course.score }}</td>
+            <td>
+                <a href="{{ url_for('.edit_course', id=course.id) }}"><span class="label label-primary">Edit</span></a> 
+                <a href="{{ url_for('.delete_course', id=course.id) }}"><span class="label label-danger">Del</span></a>
+            </td>
         </tr>
         {% endfor %}
     </table>

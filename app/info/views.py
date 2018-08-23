@@ -35,6 +35,44 @@ def courses():
                            courses=courses, pagination=pagination)
 
 
+@info.route('/edit-course/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_course(id):
+    course = Course.query.get_or_404(id)
+    form = CourseForm()
+    if form.validate_on_submit():
+        course.name = form.name.data
+        course.term = form.term.data
+        course.type_id = form.type_id.data
+        course.credit = form.credit.data
+        course.score = form.credit.data
+        db.session.add(course)
+        db.session.commit()
+        flash('The course has been updated.')
+        return redirect(url_for('.courses'))
+    form.name.data = course.name
+    form.term.data = course.term
+    form.type_id.data = course.type_id
+    form.credit.data = course.credit
+    form.score.data = course.score
+    return render_template('/info/edit_course.html', form=form)
+
+
+@info.route('/delete-course/<int:id>', methods=['GET'])
+@login_required
+def delete_course(id):
+    course = Course.query.get_or_404(id)
+    db.session.delete(course)
+    db.session.commit()
+    return redirect(url_for('.courses'))
+
+
+@info.route('/import-course', methods=['GET', 'POST'])
+@login_required
+def import_courses():
+    return render_template('/info/import_courses.html')
+
+
 def get_statistics(user, terms):
     courses = user.courses.filter(Course.term.in_(terms)).all()
     return {
