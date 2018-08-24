@@ -406,7 +406,10 @@ class Course(db.Model):
                     if course.type_id == CourseType.GENERAL]) +\
             Course.get_reading_credit(courses)
 
-    def guess_type_id(self, type_name):
+    @staticmethod
+    def guess_type_id(data):
+        course_id = data['course_id']
+        type_name = data['type_name']
         if type_name == '通识':
             return CourseType.GENERAL
         if type_name == '通修':
@@ -416,18 +419,39 @@ class Course(db.Model):
         if type_name == '核心':
             return CourseType.PRO_CORE
         if type_name == '选修':
-            return CourseType.GENERAL
+            if data['credit'] == 0:
+                return CourseType.READING
+            if course_id.startswith(('002', '003', '004', '005', '37', '500')):
+                return CourseType.GENERAL
+            return CourseType.PRO_OPTIONAL
+        return CourseType.PUBLIC_OPTIONAL
 
     @staticmethod
-    def parse_courses(markup):
+    def fetch_course(tds):
+        data = {
+            'course_id': tds[1].get_text().strip(),
+            'course_name': tds[2].get_text().strip(),
+            'type_name': tds[4].get_text().strip()
+        }
+        try:
+            data['credit'] = int(tds[5].get_text().strip())
+        except:
+            data['credit'] = 0
+        try:
+            data['score'] = float(tds[6].get_text().strip())
+        except:
+            data['score'] = 0.0
+        course = Course(name=data['course_name'],
+                        credit=data['credit'],
+                        score=data['score'],
+                        type_id=Course.guess_type_id(data))
+        return course
+
+    @staticmethod
+    def fetch_courses(markup):
         soup = BeautifulSoup(markup, features='lxml')
         courses = []
         for tr in soup.select('table table:nth-of-type(2) tr')[1:]:
-            tds = tr.find_all('td')
-            course = Course(name=tds[2].get_text().strip(),
-                            credit=int(tds[5].get_text().strip()),
-                            score=float(tds[6].get_text().strip()))
-            type_name = tds[4].get_text().strip()
-            course.type_id = course.guess_type_id(type_name)
+            course = Course.fetch_course(tr.find_all('td'))
             courses.append(course)
         return courses

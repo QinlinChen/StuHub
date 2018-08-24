@@ -73,7 +73,7 @@ def import_courses():
     form = ImportCourseForm()
     if form.validate_on_submit():
         markup = request.files[form.file.name].read().decode('utf-8')
-        for course in Course.parse_courses(markup):
+        for course in Course.fetch_courses(markup):
             course.term = form.term.data
             course.user = current_user._get_current_object()
             db.session.add(course)
