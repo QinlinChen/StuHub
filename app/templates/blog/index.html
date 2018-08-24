@@ -2,13 +2,13 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "_macros.html" as macros %}
 
-{% block title %}{{ app_name }} - Blog{% endblock %}
+{% block title %}{{ app_name }} - 讨论区{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
     <h1>
-        Hello, {% if current_user.is_authenticated %}{{ current_user.username }}
-        {% else %}Stranger{% endif %}!
+        欢迎，{% if current_user.is_authenticated %}{{ current_user.username }}
+        {% else %}游客{% endif %}!
     </h1>
 </div>
 <div>
@@ -18,9 +18,9 @@
 </div>
 <div class="post-tabs">
     <ul class="nav nav-tabs">
-        <li {% if not show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_all') }}">All</a></li>
+        <li {% if not show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_all') }}">所有人</a></li>
         {% if current_user.is_authenticated %}
-        <li {% if show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_followed') }}">Followers</a></li>
+        <li {% if show_followed %} class="active"{% endif %}><a href="{{ url_for('.show_followed') }}">我关注的</a></li>
         {% endif %}
     </ul>
     {% include 'blog/_posts.html' %}

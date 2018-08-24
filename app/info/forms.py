@@ -10,16 +10,16 @@ from ..models import course_type_name
 
 
 class CourseForm(FlaskForm):
-    name = StringField("Course name", validators=[DataRequired()])
-    term = SelectField('Term', coerce=int, choices=[
+    name = StringField("课程名称", validators=[DataRequired()])
+    term = SelectField('学期', coerce=int, choices=[
                        (index, '第%d学期' % index) for index in range(1, 9)])
-    type_id = SelectField('Course type', coerce=int, choices=[
+    type_id = SelectField('课程类型', coerce=int, choices=[
                           (index, lable) for index, lable in course_type_name.items()])
-    credit = IntegerField("Credit", validators=[
+    credit = IntegerField("学分", validators=[
                           InputRequired(), NumberRange(0, 150)])
-    score = FloatField("Score", validators=[
+    score = FloatField("成绩", validators=[
                        InputRequired(), NumberRange(0.0, 100.0)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('提交')
 
 
 class LessEqualTo(object):
@@ -48,19 +48,19 @@ class LessEqualTo(object):
 
 
 class TermRangeForm(FlaskForm):
-    term_from = SelectField('Term from', validators=[LessEqualTo('term_to')],
+    term_from = SelectField('开始学期', validators=[LessEqualTo('term_to')],
                             coerce=int, choices=[
                             (index, '第%d学期' % index) for index in range(1, 9)])
-    term_to = SelectField('Term to', coerce=int, choices=[
+    term_to = SelectField('结束学期', coerce=int, choices=[
                           (index, '第%d学期' % index) for index in range(1, 9)])
-    submit = SubmitField('Submit')
+    submit = SubmitField('提交')
 
 
 class ImportCourseForm(FlaskForm):
-    term = SelectField('Term', coerce=int, choices=[
+    term = SelectField('学期', coerce=int, choices=[
                        (index, '第%d学期' % index) for index in range(1, 9)])
-    file = FileField('File', validators=[DataRequired()])
-    SubmitField = SubmitField('Submit')
+    file = FileField('文件', validators=[DataRequired()])
+    SubmitField = SubmitField('提交')
 
     def validate_file(self, field):
         if os.path.splitext(field.data.filename)[-1] != '.html':

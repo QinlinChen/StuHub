@@ -1,21 +1,20 @@
 
 {% extends "base.html" %}
 
-{% block title %}{{ app_name }} - Confirm your account{% endblock %}
+{% block title %}{{ app_name }} - 激活账户{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
     <h1>
-        Hello, {{ current_user.username }}!
+        您好，{{ current_user.username }}！
     </h1>
-    <h3>You have not confirmed your account yet.</h3>
+    <h3>您尚未激活您的账户。</h3>
     <p>
-        Before you can access this site you need to confirm your account.
-        Check your inbox, you should have received an email with a confirmation link.
+        为了访问更多内容，您首先需要激活您的账户。请检查一下邮箱，看一看是否收到了激活链接。
     </p>
     <p>
-        Need another confirmation email?
-        <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
+        需要再次发送激活邮件？
+        <a href="{{ url_for('auth.resend_confirmation') }}">点我</a>
     </p>
 </div>
 {% endblock %}

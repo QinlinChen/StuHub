@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}{{ app_name }} - Statistics{% endblock %}
+{% block title %}{{ app_name }} - 成绩统计{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
     <h1>
-        Statistics
+        成绩统计
     </h1>
 </div>
 
@@ -16,7 +16,7 @@
 
 <div class="courses-table">
     <table class="table table-hover courses">
-        <thead><tr><th>Statistic quantity</th><th>Result</th></tr></thead>
+        <thead><tr><th>统计量</th><th>结果</th></tr></thead>
         {% for key, value in statistics.items() %}
         <tr>
             <td>{{ key }}</td>

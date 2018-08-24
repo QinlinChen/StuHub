@@ -1,13 +1,13 @@
-Dear {{ user.username }},
+亲爱的 {{ user.username }}，
 
-Welcome to {{ app_name }}!
+欢迎使用{{ app_name }}!
 
-To confirm your account please click on the following link:
+请通过下列链接来激活账户：
 
 {{ url_for('auth.confirm', token=token, _external=True) }}
 
-Sincerely,
+祝好，
 
-The {{ app_name }} Team
+{{ app_name }}团队
 
-Note: replies to this email address are not monitored.
+注意：这是自动发送的邮件。请勿回复。

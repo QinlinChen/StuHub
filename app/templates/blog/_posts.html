@@ -19,18 +19,22 @@
             <div class="post-footer">
                 {% if current_user == post.author %}
                 <a href="{{ url_for('.edit', id=post.id) }}">
-                    <span class="label label-primary">Edit</span>
+                    <span class="label label-primary normal_lable">编辑</span>
                 </a>
                 {% elif current_user.is_administrator() %}
                 <a href="{{ url_for('.edit', id=post.id) }}">
-                    <span class="label label-danger">Edit [Admin]</span>
+                    <span class="label label-danger normal_lable">编辑 [管理员]</span>
                 </a>
                 {% endif %}
                 <a href="{{ url_for('.post', id=post.id) }}#comments">
-                    <span class="label label-primary">{{ post.comments.count() }} Comments</span>
+                    {% if post.comments.count() == 0 %}
+                    <span class="label label-primary normal_lable">暂无评论</span>
+                    {% else %}
+                    <span class="label label-primary normal_lable">{{ post.comments.count() }} 评论</span>
+                    {% endif %}
                 </a>
                 <a href="{{ url_for('.post', id=post.id) }}">
-                    <span class="label label-default">Permalink</span>
+                    <span class="label label-default normal_lable">详情</span>
                 </a>
             </div>
         </div>

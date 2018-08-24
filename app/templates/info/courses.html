@@ -2,24 +2,24 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "_macros.html" as macros %}
 
-{% block title %}{{ app_name }} - Courses{% endblock %}
+{% block title %}{{ app_name }} - 课程{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
     <h1>
-        Courses
+        课程
     </h1>
 </div>
 
 <div class="col-md-4 courses-form">
     {{ wtf.quick_form(form) }}
     <br />
-    <p>嫌一条一条添加成绩麻烦？试试<a href="{{ url_for('.import_courses') }}">批量导入</a>.</p>
+    <p>手动添加成绩麻烦？试试<a href="{{ url_for('.import_courses') }}">批量导入</a>.</p>
 </div>
 
 <div class="courses-table">
     <table class="table table-hover courses">
-        <thead><tr><th>Term</th><th>Course name</th><th>Course type</th><th>Credit</th><th>Score</th><th></th></tr></thead>
+        <thead><tr><th>学期</th><th>课程名称</th><th>课程类型</th><th>学分</th><th>成绩</th><th></th></tr></thead>
         {% for course in courses %}
         <tr>
             <td>第{{ course.term }}学期</td>
@@ -28,8 +28,8 @@
             <td>{{ course.credit }}</td>
             <td>{{ course.score }}</td>
             <td>
-                <a href="{{ url_for('.edit_course', id=course.id) }}"><span class="label label-primary">Edit</span></a> 
-                <a href="{{ url_for('.delete_course', id=course.id) }}"><span class="label label-danger">Del</span></a>
+                <a href="{{ url_for('.edit_course', id=course.id) }}"><span class="label label-primary normal_lable">编辑</span></a> 
+                <a href="{{ url_for('.delete_course', id=course.id) }}"><span class="label label-danger normal_lable">删除</span></a>
             </td>
         </tr>
         {% endfor %}

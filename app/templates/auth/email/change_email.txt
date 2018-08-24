@@ -1,11 +1,11 @@
-Dear {{ user.username }},
+亲爱的 {{ user.username }}，
 
-To confirm your new email address click on the following link:
+请通过下列链接来修改邮箱：
 
 {{ url_for('auth.change_email', token=token, _external=True) }}
 
-Sincerely,
+祝好，
 
-The {{ app_name }} Team
+{{ app_name }}团队
 
-Note: replies to this email address are not monitored.
+注意：这是自动发送的邮件。请勿回复。
