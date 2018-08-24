@@ -27,6 +27,7 @@
                 <li><a href="{{ url_for('info.courses') }}">课程</a></li>
                 <li><a href="{{ url_for('info.statistics') }}">成绩统计</a></li>
                 <li><a href="{{ url_for('blog.index') }}">讨论区</a></li>
+                <li><a href="{{ url_for('main.feedback') }}">反馈</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
