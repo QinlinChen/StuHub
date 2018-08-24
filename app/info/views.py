@@ -85,9 +85,10 @@ def import_courses():
 def get_statistics(user, terms):
     courses = user.courses.filter(Course.term.in_(terms)).all()
     return {
-        '综合GPA': '%.2f' % Course.comprehensive_gpa(courses),
-        '专业GPA': '%.2f' % Course.academic_gpa(courses),
-        '保研GPA': '%.2f' % Course.postgraduate_recommandation_gpa(courses),
+        '综合GPA': '%.3f' % Course.comprehensive_gpa(courses),
+        '专业GPA': '%.3f' % Course.academic_gpa(courses),
+        '保研GPA': '%.3f' % Course.postgraduate_recommandation_gpa(courses),
+        '已完成经典阅读': '%d' % Course.reading_count(courses),
         '14通识学分': str(Course.general_course_credit(courses)),
         '总学分': str(Course.total_credit(courses))
     }
@@ -102,7 +103,7 @@ def statistics():
                                 term_to=form.term_to.data))
     form.term_from.data = request.args.get('term_from', 1, type=int)
     form.term_to.data = request.args.get('term_to', 8, type=int)
-    terms = list(range(form.term_from.data, form.term_to.data))
+    terms = list(range(form.term_from.data, form.term_to.data + 1))
     statistics = get_statistics(current_user, terms)
     return render_template('/info/statistics.html', form=form,
                            statistics=statistics)

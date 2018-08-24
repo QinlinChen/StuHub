@@ -384,10 +384,14 @@ class Course(db.Model):
         return Course.average_weighted_score_on_credit(pgr_courses) / 20
 
     @staticmethod
-    def have_fullfilled_reading_requirement(courses):
+    def reading_count(courses):
         reading_courses = [course for course in courses
                            if course.type_id == CourseType.READING]
-        return len(reading_courses) >= 6
+        return len(reading_courses)
+
+    @staticmethod
+    def have_fullfilled_reading_requirement(courses):
+        return Course.reading_count(courses) >= 6
 
     @staticmethod
     def get_reading_credit(courses):
