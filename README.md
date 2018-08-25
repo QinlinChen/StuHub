@@ -1,9 +1,9 @@
 # StuHub
 
-StuHub is a flask web application designed to store the students' course infomation
-and show some statistic results such as GPA based on those infomation.
-It now only supports the course infomation format for Nanjing University.
-However, it is not difficult to be extended for more universities.
+StuHub is a flask web application designed to store the students' course information
+and show some statistic results such as GPA based on that information.
+It now only supports the course information format for Nanjing University.
+However, it is not difficult to be extended for more universities' use.
 
 Besides, StuHub also provides a blog module for students to communicate
 with each other. This module came from the book 
@@ -27,8 +27,8 @@ In this project, it is created in `stuhub.py`,
 so you have to set `FLASK_APP` with the value `stuhub`. 
 
     * `FLASK_ENV`: It is required by FLASK
-which is usually set as `developemnt` or `production`.
-You can leran more from offical flask document.
+which is usually set as `development` or `production`.
+You can learn more from the official flask document.
 
     * `APP_CONFIG`: It indicates which set of configuration to uses.
 It can be `development`, `production`, `heroku` and `unix`.

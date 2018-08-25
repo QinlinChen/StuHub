@@ -9,5 +9,7 @@
 </div>
 <div class="col-md-4">
     {{ wtf.quick_form(form) }}
+    <br />
+    <p>初次使用？<a href="{{ url_for('.import_courses_helper') }}">查看帮助</a>.</p>
 </div>
 {% endblock %}

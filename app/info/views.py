@@ -82,6 +82,11 @@ def import_courses():
     return render_template('/info/import_courses.html', form=form)
 
 
+@info.route('/import-courses-helper')
+def import_courses_helper():
+    return render_template('/info/import_courses_helper.html')
+
+
 def get_statistics(user, terms):
     courses = user.courses.filter(Course.term.in_(terms)).all()
     return {
