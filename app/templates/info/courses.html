@@ -14,7 +14,8 @@
 <div class="col-md-4 courses-form">
     {{ wtf.quick_form(form) }}
     <br />
-    <p>手动添加成绩麻烦？试试<a href="{{ url_for('.import_courses') }}">批量导入</a>.</p>
+    <p>手动添加成绩麻烦？试试<a href="{{ url_for('.import_courses') }}">批量导入</a>。</p>
+    <p>导入有误？<a href="{{ url_for('.delete_all_courses') }}">全部删除</a>。</p>
 </div>
 
 <div class="courses-table">

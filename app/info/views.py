@@ -67,6 +67,16 @@ def delete_course(id):
     return redirect(url_for('.courses'))
 
 
+@info.route('/delete-all-courses', methods=['GET'])
+@login_required
+def delete_all_courses():
+    for course in current_user.courses.all():
+        db.session.delete(course)
+    db.session.commit()
+    flash('删除成功')
+    return redirect(url_for('.courses'))
+
+
 @info.route('/import-course', methods=['GET', 'POST'])
 @login_required
 def import_courses():

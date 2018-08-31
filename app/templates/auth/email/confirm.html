@@ -1,7 +1,7 @@
 <p>亲爱的 {{ user.username }}，</p>
 <p>欢迎使用<b>{{ app_name }}</b>！</p>
 <p><a href="{{ url_for('auth.confirm', token=token, _external=True) }}">点我</a>激活账户。</p>
-<p>当然，您也可以复制粘贴以下链接到浏览器地址栏中来修改邮箱</p>
+<p>当然，您也可以复制粘贴以下链接到浏览器地址栏中来激活账户</p>
 <p>{{ url_for('auth.confirm', token=token, _external=True) }}</p>
 <p>祝好，</p>
 <p>{{ app_name }}团队</p>
