@@ -394,7 +394,7 @@ class Course(db.Model):
         return Course.reading_count(courses) >= 6
 
     @staticmethod
-    def get_reading_credit(courses):
+    def reading_credit(courses):
         if Course.have_fullfilled_reading_requirement(courses):
             return 2
         return 0
@@ -402,13 +402,39 @@ class Course(db.Model):
     @staticmethod
     def total_credit(courses):
         return sum([course.credit for course in courses]) + \
-            Course.get_reading_credit(courses)
+            Course.reading_credit(courses)
 
     @staticmethod
     def general_course_credit(courses):
         return sum([course.credit for course in courses
                     if course.type_id == CourseType.GENERAL]) +\
-            Course.get_reading_credit(courses)
+            Course.reading_credit(courses)
+
+    @staticmethod
+    def public_basic_credit(courses):
+        return sum([course.credit for course in courses
+                    if course.type_id in (CourseType.PUBLIC_BASIC,
+                                          CourseType.PUBLIC_BASIC_MATHS_PHYSICS)])
+
+    @staticmethod
+    def public_optional_credit(courses):
+        return sum([course.credit for course in courses
+                    if course.type_id == CourseType.PUBLIC_OPTIONAL])
+
+    @staticmethod
+    def pro_basic_credit(courses):
+        return sum([course.credit for course in courses
+                    if course.type_id == CourseType.PRO_BASIC])
+
+    @staticmethod
+    def pro_core_credit(courses):
+        return sum([course.credit for course in courses
+                    if course.type_id == CourseType.PRO_CORE])
+
+    @staticmethod
+    def pro_optional_credit(courses):
+        return sum([course.credit for course in courses
+                    if course.type_id == CourseType.PRO_OPTIONAL])
 
     @staticmethod
     def guess_type_id(data):

@@ -105,6 +105,11 @@ def get_statistics(user, terms):
         '保研GPA': '%.3f' % Course.postgraduate_recommandation_gpa(courses),
         '已完成经典阅读': '%d' % Course.reading_count(courses),
         '14通识学分': str(Course.general_course_credit(courses)),
+        '通修学分': str(Course.public_basic_credit(courses)),
+        '公选学分': str(Course.public_optional_credit(courses)),
+        '专业平台学分': str(Course.pro_basic_credit(courses)),
+        '专业核心学分': str(Course.pro_core_credit(courses)),
+        '专业选修学分': str(Course.pro_optional_credit(courses)),
         '总学分': str(Course.total_credit(courses))
     }
 
